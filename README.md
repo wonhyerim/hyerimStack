@@ -1,8 +1,6 @@
 
 
-![](.\image\logo.PNG)
-
-
+![logo](./image/logo.png)
 
 # 혦's Stack
 
