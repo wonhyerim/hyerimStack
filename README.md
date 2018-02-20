@@ -1,6 +1,6 @@
 
 
-![logo](./image/logo.png)
+![logo](./image/mainLogo.png)
 
 # Index
 
@@ -55,3 +55,5 @@
 </br>
 </br>
 </br>
+
+![mainIcon](./image/mainIcon.png "mainIcon" "float:right;") write by. 원혜림
