@@ -2,11 +2,9 @@
 
 ![logo](./image/logo.png)
 
-# 혦's Stack
+# Index
 
-#### Index
-
-- 할일 목록
+- ###할일 목록
 
   + 자격증
 
