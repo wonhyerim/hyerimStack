@@ -1,3 +1,4 @@
+
 ![logo](../image/logo.png)
 
 </br>
@@ -5,7 +6,7 @@
 
 # SQLp - 국가공인 SQL 전문가
 
-   **INDEX**
+**INDEX**
 
 1. SQLp란 ? (자격소개)
 2. 공부 계획
@@ -34,7 +35,6 @@
 </br>
 </br>
 
-###
 
 ### 1. **시험일정**
 
@@ -157,7 +157,7 @@ SQL 기본, SQL 활용, SQL 최적화 기본 원리 로 구성되어 있으며 S
 
 
 
--  과목 3 - SQL 고급 활용 튜닝
+-  과목 3 - [SQL 고급 활용 튜닝](./contents/sqlHighAndTuning)
 
    -  아키텍처 기반 튜닝 원리
 
