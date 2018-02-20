@@ -157,7 +157,7 @@ SQL 기본, SQL 활용, SQL 최적화 기본 원리 로 구성되어 있으며 S
 
 
 
--  과목 3 - [SQL 고급 활용 튜닝](./contents/sqlHighAndTuning)
+-  과목 3 - [SQL 고급 활용 튜닝](./contents/sqlHighAndTuning.md)
 
    -  아키텍처 기반 튜닝 원리
 
