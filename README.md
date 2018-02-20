@@ -4,18 +4,19 @@
 
 # Index
 
-- ###할일 목록
+- ###할 일 목록
 
-  + 자격증
+  + #####[자격증](#license)  
 
-    1. SQLp
-    2. 정보보안기사
-    3. DAP
-    4. TOEIC
+    1. [SQLp](/SQLp/sqlpIndex.md)
+    2. [정보처리기사](./infoLicense/index.md)
+    3. 정보보안기사
+    4. DAP
+    5. TOEIC
 
     ​
 
-  + 전공 
+  + ##### [전공](#major) 
 
     1. 전산
        + OS
@@ -34,17 +35,11 @@
 
 
 
-
-
-----
-
-
-
 ## 할 일 목록
 
   
 
-### 자격증
+### 자격증 <a name="license" />
 
 1. **SQLp**
    - SQLp 란 ( 자격 소개 )
@@ -79,7 +74,7 @@
 
 
 
-### 전공 
+### 전공<a name="major" /> 
 
 1. **전산**
 
