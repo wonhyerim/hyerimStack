@@ -4,22 +4,23 @@
 
 # Index
 
-- ###할 일 목록
 
-  + #####[자격증](#license)  
 
-    1. [SQLp](/SQLp/sqlpIndex.md)
-    2. [정보처리기사](./infoLicense/index.md)
-    3. 정보보안기사
-    4. DAP
-    5. TOEIC
+- ####[자격증](#license)  
 
-    ​
+  1. [SQLp](/SQLp/sqlpIndex.md)
+  2. [정보처리기사](./infoLicense/index.md)
+  3. 정보보안기사
+  4. DAP
+  5. TOEIC
 
-  + ##### [전공](#major) 
+  ​
+
+  + #### [전공](#major) 
 
     1. 전산
-       + OS
+       - OS
+
        + Network
        + Database
        + Algorithm
@@ -35,7 +36,7 @@
 
 
 
-## 할 일 목록
+## 
 
   
 
