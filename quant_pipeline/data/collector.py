@@ -3,6 +3,7 @@ import pandas as pd
 import numpy as np
 
 from ..utils.types import MarketData
+from ..utils.db import create_db_engine, ensure_intraday_table
 
 
 class DataCollector:
@@ -110,3 +111,39 @@ class PyKrxCollector:
                 all_df = pd.concat(frames)
                 all_df.to_csv(out_csv_path, encoding="utf-8-sig")
         return results
+
+    def save_intraday_to_db(self, db_url: str, symbols: List[str], date_yyyymmdd: str, table_name: str = "intraday_bars") -> None:
+        engine = create_db_engine(db_url)
+        ensure_intraday_table(engine, table_name=table_name)
+        results = self.fetch_and_save_for_date(symbols, date_yyyymmdd, out_csv_path=None)
+        rows = []
+        for sym, df in results.items():
+            if df.empty:
+                continue
+            # df index는 분 단위 시간. 문자열 또는 DatetimeIndex일 수 있음
+            if not isinstance(df.index, pd.DatetimeIndex):
+                # PyKrx는 보통 시각이 인덱스 문자열로 들어옴. 변환 시 날짜 정보가 필요함
+                # 날짜+시간 결합: YYYYMMDD HH:MM 형태 지원 시 파싱
+                try:
+                    ts = pd.to_datetime(date_yyyymmdd + " " + df.index.astype(str), format="%Y%m%d %H%M")
+                except Exception:
+                    ts = pd.to_datetime(df.index)
+            else:
+                ts = df.index
+            dfx = df.copy()
+            dfx["symbol"] = sym
+            dfx["ts"] = ts
+            cols = [
+                "symbol", "ts", "open", "high", "low", "close", "volume", "value",
+                "foreign_value", "inst_value", "foreign_volume", "inst_volume", "foreign_net", "inst_net"
+            ]
+            for c in cols:
+                if c not in dfx.columns:
+                    dfx[c] = np.nan
+            rows.append(dfx[cols])
+        if not rows:
+            return
+        final_df = pd.concat(rows)
+        # to_sql with if_exists append
+        with engine.begin() as conn:
+            final_df.to_sql(table_name, con=conn, if_exists="append", index=False)

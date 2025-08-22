@@ -19,6 +19,7 @@
   - `report.py`: 총수익, CAGR, 변동성, 샤프, MDD 및 최근 체결 내역 출력
 - `utils`: 공용 타입 정의
   - `types.py`: `MarketData`, `ScreenResult`, `PatternSet`, `Signals`, `BacktestResult`
+  - `db.py`: MariaDB 연결, 테이블 생성 유틸(`ensure_intraday_table`)
 - 루트
   - `main.py`: 전체 파이프라인 오케스트레이션
   - `requirements.txt`
@@ -37,15 +38,25 @@ python3 -m venv /workspace/.venv
 /workspace/.venv/bin/python -m quant_pipeline.main --symbols 005930 000660 035420 --start 2023-01-01 --end 2023-12-31 --capital 1000000
 ```
 
-### PyKrx로 특정 날짜 분봉/수급 저장
-입력한 날짜(YYYYMMDD)의 분봉 OHLCV, 거래대금, 거래량과 투자자(외국인/기관) 수급(일별)을 CSV로 저장합니다.
+### PyKrx로 특정 날짜 분봉/수급 저장 (CSV)
 ```bash
 /workspace/.venv/bin/python -m quant_pipeline.main \
   --symbols 005930 000660 \
   --intraday-date 20250115 \
   --save-csv /workspace/krx_20250115.csv
 ```
-- 저장 컬럼 예시: open, high, low, close, volume, value, foreign_value, inst_value, foreign_volume, inst_volume, foreign_net, inst_net, symbol
+
+### PyKrx로 특정 날짜 분봉/수급 저장 (MariaDB)
+- DB URL 형식: `mysql+pymysql://USER:PASSWORD@HOST:3306/DBNAME`
+- 기본 테이블: `intraday_bars` (없으면 자동 생성)
+```bash
+/workspace/.venv/bin/python -m quant_pipeline.main \
+  --symbols 005930 000660 \
+  --intraday-date 20250115 \
+  --db-url "mysql+pymysql://user:pass@127.0.0.1:3306/quant" \
+  --table intraday_bars
+```
+- 저장 컬럼: `symbol, ts, open, high, low, close, volume, value, foreign_value, inst_value, foreign_volume, inst_volume, foreign_net, inst_net`
 - 참고: 투자자 순매매는 PyKrx API 특성상 일 단위 합계를 분봉에 브로드캐스트하여 부착합니다.
 
 ## 커스터마이징 포인트

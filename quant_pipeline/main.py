@@ -29,9 +29,12 @@ def run_pipeline(symbols: List[str], start: str, end: str, capital: float):
     reporter.summarize(bt_result)
 
 
-def fetch_intraday_and_save(symbols: List[str], date: str, out_csv: str):
+def fetch_intraday_and_save(symbols: List[str], date: str, out_csv: str | None, db_url: str | None, table: str | None):
     pyc = PyKrxCollector()
-    pyc.fetch_and_save_for_date(symbols, date, out_csv_path=out_csv)
+    if db_url:
+        pyc.save_intraday_to_db(db_url=db_url, symbols=symbols, date_yyyymmdd=date, table_name=table or "intraday_bars")
+    if out_csv:
+        pyc.fetch_and_save_for_date(symbols, date, out_csv_path=out_csv)
 
 
 def parse_args():
@@ -42,14 +45,16 @@ def parse_args():
     parser.add_argument("--capital", type=float, default=100000.0)
     parser.add_argument("--intraday-date", help="Fetch minute OHLCV for date YYYYMMDD and save")
     parser.add_argument("--save-csv", help="Path to save intraday CSV when --intraday-date is used")
+    parser.add_argument("--db-url", help="MariaDB URL, e.g., mysql+pymysql://user:pass@host:3306/dbname")
+    parser.add_argument("--table", help="DB table name for intraday (default: intraday_bars)")
     return parser.parse_args()
 
 
 if __name__ == "__main__":
     args = parse_args()
-    if args.intraday_date and args.save_csv:
-        fetch_intraday_and_save(symbols=args.symbols, date=args.intraday_date, out_csv=args.save_csv)
+    if args.intraday_date:
+        fetch_intraday_and_save(symbols=args.symbols, date=args.intraday_date, out_csv=args.save_csv, db_url=args.db_url, table=args.table)
     else:
         if not args.start or not args.end:
-            raise SystemExit("--start and --end are required for backtest mode. Or use --intraday-date with --save-csv.")
+            raise SystemExit("--start and --end are required for backtest mode. Or use --intraday-date.")
         run_pipeline(symbols=args.symbols, start=args.start, end=args.end, capital=args.capital)
