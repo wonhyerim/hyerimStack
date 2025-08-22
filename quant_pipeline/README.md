@@ -4,7 +4,7 @@
 
 ## 디렉터리 구조
 - `data`: 데이터 수집
-  - `collector.py`: OHLCV, 거래대금(value), 외인/기관 순매매(현재는 모의 데이터 생성)
+  - `collector.py`: OHLCV, 거래대금(value), 외인/기관 순매매(현재는 모의 데이터 생성) + PyKrx 기반 분봉/수급 수집 유틸(`PyKrxCollector`)
 - `indicators`: 기술적 지표
   - `core.py`: SMA, 볼린저밴드, 엔벨로프, 수익률, 이격도
 - `screening`: 종목 스크리닝
@@ -36,6 +36,17 @@ python3 -m venv /workspace/.venv
 ```bash
 /workspace/.venv/bin/python -m quant_pipeline.main --symbols 005930 000660 035420 --start 2023-01-01 --end 2023-12-31 --capital 1000000
 ```
+
+### PyKrx로 특정 날짜 분봉/수급 저장
+입력한 날짜(YYYYMMDD)의 분봉 OHLCV, 거래대금, 거래량과 투자자(외국인/기관) 수급(일별)을 CSV로 저장합니다.
+```bash
+/workspace/.venv/bin/python -m quant_pipeline.main \
+  --symbols 005930 000660 \
+  --intraday-date 20250115 \
+  --save-csv /workspace/krx_20250115.csv
+```
+- 저장 컬럼 예시: open, high, low, close, volume, value, foreign_value, inst_value, foreign_volume, inst_volume, foreign_net, inst_net, symbol
+- 참고: 투자자 순매매는 PyKrx API 특성상 일 단위 합계를 분봉에 브로드캐스트하여 부착합니다.
 
 ## 커스터마이징 포인트
 - 실데이터 연동: `data/collector.py`의 모의 데이터 생성 로직을 실제 데이터 소스(API/DB/CSV 등)로 교체
